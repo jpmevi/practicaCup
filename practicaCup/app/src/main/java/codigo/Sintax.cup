@@ -1,0 +1,129 @@
+package codigo;
+
+import java_cup.runtime.Symbol;
+import java.util.ArrayList;
+import java.util.List;
+import Forma.*;
+parser code {:
+    ArrayList<Formas> listaFormas= new ArrayList<Formas>();
+    private List<String> errorsList;
+    public Parser(LexerCup lex) {
+        super(lex);
+        this.errorsList = new ArrayList();
+    }
+    @Override
+        public void syntax_error(Symbol st) {
+            Token token = (Token) st.value;
+            report_error("Error Sintactico con el  Token:"+ token.getLexeme()+" este no pertenece a la estructura - linea: "+token.getLine()+" - columna: "+token.getColumn() + "\n",null);
+
+            System.out.println("Error Sintactico con el Token: " + token.getLexeme() + " este no pertenece a la estructura - linea: " + token.getLine() + ", columna: " + token.getColumn());
+                    errorsList.add(String.format("Error Sintactico con el Token: '%s' este no pertenece a la estructura- linea: %d  columna: %d. Corrige e intenta de nuevo.", token.getLexeme(), token.getLine(), token.getColumn()));
+        }
+        //retorna list de errores sintacticos
+        public List<String> getErrorsList(){
+            return errorsList
+            ;
+        }
+
+    //retorna list de formas
+        public ArrayList getListaFormas(){
+            return listaFormas;
+        }
+
+
+    public void addListaFormas(Formas forma){
+            try {
+                 listaFormas.add(forma);
+                }
+            catch(Exception e) {
+                System.out.println("error encontradoo: "+e);
+                }
+        }
+:};
+
+
+terminal Token T_color, circulo,rectangulo,  linea, poligono, cuadrado, curva, animar, objeto, anterior, graficar,
+ Suma, Resta, Multiplicacion, Division, Parentesis_a, Parentesis_c, coma, Numero, SLinea;
+non terminal INICIO, FORMA, SIGUIENTE, ANIMAR, ANIMACION, GRAFICAR;
+non terminal Integer OPERACION;
+
+precedence left Suma, Resta;
+precedence left Multiplicacion, Division;
+
+start with INICIO;
+
+INICIO ::= 
+    GRAFICAR {:
+            System.out.println("Encontro graficar");
+        :}
+|error {:
+            System.out.println("Error en INICIO");
+        :} INICIO
+|
+;   
+GRAFICAR ::= 
+    graficar FORMA 
+;   
+FORMA ::= 
+    circulo Parentesis_a OPERACION:no1 coma OPERACION:no2 coma OPERACION:no3 coma T_color:color Parentesis_c SIGUIENTE 
+    {: Circulo circulo = new Circulo(no1.intValue(), no2.intValue(), color.getLexeme(), "circulo", no3.intValue()) ;
+    addListaFormas(circulo);  :} |
+    cuadrado Parentesis_a OPERACION:no1 coma OPERACION:no2 coma OPERACION:no3 coma T_color:color Parentesis_c SIGUIENTE 
+    {: Cuadrado cuadrado = new Cuadrado(no1.intValue(), no2.intValue(), color.getLexeme(), "cuadrado", no3.intValue()) ;
+    addListaFormas(cuadrado);  :} |
+    rectangulo Parentesis_a OPERACION:no1 coma OPERACION:no2 coma OPERACION:no3 coma OPERACION:no4 coma T_color:color Parentesis_c SIGUIENTE 
+    {: Rectangulo rectangulo = new Rectangulo(no1.intValue(), no2.intValue(), color.getLexeme(), "rectangulo", no3.intValue(), no4.intValue()) ; 
+    addListaFormas(rectangulo); :} |
+    linea Parentesis_a OPERACION:no1 coma OPERACION:no2 coma OPERACION:no3 coma OPERACION:no4 coma T_color:color Parentesis_c SIGUIENTE 
+    {: Linea linea = new Linea(no1.intValue(), no2.intValue(), no3.intValue(), no4.intValue(), color.getLexeme(), "linea") ; 
+    addListaFormas(linea);  :} |
+    poligono Parentesis_a OPERACION:no1 coma OPERACION:no2 coma OPERACION:no3 coma OPERACION:no4 coma OPERACION:no5 coma T_color:color Parentesis_c SIGUIENTE 
+    {: Poligono poligono = new Poligono(no1.intValue(), no2.intValue(), no3.intValue(), no4.intValue(), no5.intValue(), color.getLexeme(), "poligono" ) ; 
+    addListaFormas(poligono); :}
+| error {:
+            System.out.println("Error en FORMA");
+        :} GRAFICAR
+;
+
+OPERACION ::= 
+    OPERACION:e1 Suma OPERACION:e2
+    {: RESULT = new Integer(e1.intValue()+e2.intValue());  :}
+    |
+    OPERACION:e1 Resta OPERACION:e2
+    {: RESULT = new Integer(e1.intValue()-e2.intValue());  :}
+    |
+    OPERACION:e1 Multiplicacion OPERACION:e2
+    {: RESULT = new Integer(e1.intValue()*e2.intValue()); :}
+    |
+    OPERACION:e1 Division OPERACION:e2
+    {: RESULT = new Integer(e1.intValue()/e2.intValue());  :}
+    |
+    Numero:n                 
+    {: RESULT = Integer.valueOf( n.getLexeme());  :}
+    |
+    Parentesis_a OPERACION:e Parentesis_c     
+    {: RESULT = e; :}
+    |
+    error {:
+            System.out.println("Error en OPERACION");
+        :}  GRAFICAR
+;
+SIGUIENTE ::= 
+    GRAFICAR |
+    ANIMAR |
+;
+ ANIMAR ::= 
+    animar objeto anterior Parentesis_a OPERACION coma OPERACION coma OPERACION coma OPERACION Parentesis_c
+| error {:
+            System.out.println("Error en ANIMAR");
+        :}
+;
+
+ANIMACION ::= 
+    linea |
+    curva
+| error {:
+            System.out.println("Error en ANIMACION");
+        :}
+;
+
