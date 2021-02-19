@@ -5,13 +5,14 @@
  */
 package Forma;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author meza4
  */
-public class Formas {
+public class Formas implements Serializable {
     private int posX;
     private int posY;
     private String color;
