@@ -215,7 +215,7 @@ public class Parser extends java_cup.runtime.lr_parser {
     java_cup.runtime.lr_parser parser,
     java.util.Stack            stack,
     int                        top)
-    throws Exception
+    throws java.lang.Exception
   {
     /* call code in generated class */
     return action_obj.CUP$Parser$do_action(act_num, parser, stack, top);
@@ -235,7 +235,7 @@ public class Parser extends java_cup.runtime.lr_parser {
 
 
     ArrayList<Formas> listaFormas= new ArrayList<Formas>();
-    private List<String> errorsList;
+    private ArrayList<String> errorsList= new ArrayList<String>();
     public Parser(LexerCup lex) {
         super(lex);
         this.errorsList = new ArrayList();
@@ -246,10 +246,10 @@ public class Parser extends java_cup.runtime.lr_parser {
             report_error("Error Sintactico con el  Token:"+ token.getLexeme()+" este no pertenece a la estructura - linea: "+token.getLine()+" - columna: "+token.getColumn() + "\n",null);
 
             System.out.println("Error Sintactico con el Token: " + token.getLexeme() + " este no pertenece a la estructura - linea: " + token.getLine() + ", columna: " + token.getColumn());
-                    errorsList.add(String.format("Error Sintactico con el Token: '%s' este no pertenece a la estructura- linea: %d  columna: %d. Corrige e intenta de nuevo.", token.getLexeme(), token.getLine(), token.getColumn()));
+            errorsList.add(String.format("Error Sintactico con el Token: '%s' este no pertenece a la estructura- linea: %d  columna: %d. Corrige e intenta de nuevo.", token.getLexeme(), token.getLine(), token.getColumn()));
         }
         //retorna list de errores sintacticos
-        public List<String> getErrorsList(){
+        public ArrayList<String> getErrorsList(){
             return errorsList
             ;
         }
@@ -286,7 +286,7 @@ class CUP$Parser$actions {
     java_cup.runtime.lr_parser CUP$Parser$parser,
     java.util.Stack            CUP$Parser$stack,
     int                        CUP$Parser$top)
-    throws Exception
+    throws java.lang.Exception
     {
       /* Symbol object for return from actions */
       java_cup.runtime.Symbol CUP$Parser$result;
@@ -699,7 +699,7 @@ class CUP$Parser$actions {
     java_cup.runtime.lr_parser CUP$Parser$parser,
     java.util.Stack            CUP$Parser$stack,
     int                        CUP$Parser$top)
-    throws Exception
+    throws java.lang.Exception
     {
               return CUP$Parser$do_action_part00000000(
                                CUP$Parser$act_num,

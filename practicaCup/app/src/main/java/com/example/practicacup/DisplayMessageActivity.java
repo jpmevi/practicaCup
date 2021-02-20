@@ -77,19 +77,16 @@ public class DisplayMessageActivity extends AppCompatActivity {
                     paint.setStyle(Paint.Style.FILL);
                     Path path = new Path();
                     for(double a = 0; a < 2*Math.PI; a+=2*Math.PI/poligo.getCantLados()){
-                        double  x = 100*Math.cos(a);
-                        double  y = 100*Math.sin(a);
+                        double  x = poligo.getAncho()*Math.cos(a);
+                        double  y = poligo.getAlto()*Math.sin(a);
                         if(a==0){
-                            path.moveTo(Float.parseFloat(String.valueOf(x+500.0)), Float.parseFloat(String.valueOf(y+500.0)));
+                            path.moveTo(Float.parseFloat(String.valueOf(x+poligo.getPosX()+poligo.getAncho()/2)), Float.parseFloat(String.valueOf(y+poligo.getPosY()+poligo.getAlto()/2)));
                         }
-                            path.lineTo(Float.parseFloat(String.valueOf(x+500.0)), Float.parseFloat(String.valueOf(y+500.0)));
-                            System.out.println(String.valueOf(a) + "COORDENADAS: " +Float.parseFloat(String.valueOf(x+500.0)) + " " + Float.parseFloat(String.valueOf(y+500.0)));
+                            path.lineTo(Float.parseFloat(String.valueOf(x+poligo.getPosX()+poligo.getAncho()/2)), Float.parseFloat(String.valueOf(y+poligo.getPosY()+poligo.getAlto()/2)));
                     }
                     canvas.drawPath(path, paint);
                 }
-
             }
-
         }
 
         public Paint establecerColor(String color) {

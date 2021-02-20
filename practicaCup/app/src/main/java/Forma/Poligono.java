@@ -14,7 +14,7 @@ public class Poligono extends Formas {
     private int ancho;
     private int cantLados;
 
-    public Poligono(int alto, int ancho, int cantLados, int posX, int posY, String color, String forma) {
+    public Poligono(int posX, int posY, int alto, int ancho, int cantLados, String color, String forma) {
         super(posX, posY, color, forma);
         this.alto = alto;
         this.ancho = ancho;

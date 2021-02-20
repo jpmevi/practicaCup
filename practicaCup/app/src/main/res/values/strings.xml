@@ -3,4 +3,5 @@
     <string name="texto_principal">Graficar formas</string>
     <string name="textfield_mensaje">Introduzca una expresion</string>
     <string name="button_generar">Generar</string>
+    <string name="error"></string>
 </resources>
