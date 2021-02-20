@@ -76,8 +76,6 @@ public class DisplayMessageActivity extends AppCompatActivity {
                     Poligono poligo = (Poligono) formaElegida;
                     paint.setStyle(Paint.Style.FILL);
                     Path path = new Path();
-
-                    path.moveTo(500, 500);
                     for(double a = 0; a < 2*Math.PI; a+=2*Math.PI/poligo.getCantLados()){
                         double  x = 100*Math.cos(a);
                         double  y = 100*Math.sin(a);
