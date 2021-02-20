@@ -77,21 +77,17 @@ public class DisplayMessageActivity extends AppCompatActivity {
                     paint.setStyle(Paint.Style.FILL);
                     Path path = new Path();
 
-                    for(int a = 0; a < 2*Math.PI; a+=.02){
-                        double r=250*Math.cos(Math.PI/poligo.getCantLados())
-                        double x = 250*Math.cos(a);
-                        double y = 250*Math.sin(a);
-
-                        canvas.drawLine(250, 250,Float.parseFloat(String.valueOf(x)),Float.parseFloat(String.valueOf(y)), paint);
-                        System.out.println(String.valueOf(a) + "FORMA: " +String.valueOf(x) + " " + String.valueOf(y));
+                    path.moveTo(500, 500);
+                    for(double a = 0; a < 2*Math.PI; a+=2*Math.PI/poligo.getCantLados()){
+                        double  x = 100*Math.cos(a);
+                        double  y = 100*Math.sin(a);
+                        if(a==0){
+                            path.moveTo(Float.parseFloat(String.valueOf(x+500.0)), Float.parseFloat(String.valueOf(y+500.0)));
+                        }
+                            path.lineTo(Float.parseFloat(String.valueOf(x+500.0)), Float.parseFloat(String.valueOf(y+500.0)));
+                            System.out.println(String.valueOf(a) + "COORDENADAS: " +Float.parseFloat(String.valueOf(x+500.0)) + " " + Float.parseFloat(String.valueOf(y+500.0)));
                     }
-                    for(int i = 0; i <= poligo.getCantLados(); i++){
-                        double x = 600 * Math.cos(2*Math.PI*(i) + (poligo.getCantLados()-2)*180) + 300;
-                        double  y = 600 * Math.sin(2*Math.PI*(i) + (poligo.getCantLados()-2)*180) + 300;
-
-
-                    }
-
+                    canvas.drawPath(path, paint);
                 }
 
             }
