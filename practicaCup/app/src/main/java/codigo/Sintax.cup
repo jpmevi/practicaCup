@@ -20,7 +20,13 @@ parser code {:
             System.out.println("Error Sintactico con el Token: " + token.getLexeme() + " este no pertenece a la estructura - linea: " + token.getLine() + ", columna: " + token.getColumn());
             Error error = new Error(token.getLexeme(),token.getLine(),token.getColumn());
             errorsList.add(error);
+            List<Integer> lista=expected_token_ids();
+                    System.out.println(String.valueOf(lista.get(0)));
         }
+@Override
+    public List<Integer> expected_token_ids() {
+        return super.expected_token_ids();
+    }
 
         //retorna list de errores sintacticos
         public ArrayList<Error> getErrorsList(){
@@ -61,11 +67,12 @@ INICIO ::=
         :}
 |error {:
             System.out.println("Error en INICIO");
-        :} INICIO
-|
+        :}
+        |
 ;   
 GRAFICAR ::= 
-    graficar FORMA 
+    graficar FORMA
+
 ;   
 FORMA ::= 
     circulo Parentesis_a OPERACION:no1 coma OPERACION:no2 coma OPERACION:no3 coma T_color:color Parentesis_c SIGUIENTE 
@@ -85,7 +92,7 @@ FORMA ::=
     addListaFormas(poligono); :}
 | error {:
             System.out.println("Error en FORMA");
-        :} GRAFICAR
+        :}
 ;
 
 OPERACION ::= 

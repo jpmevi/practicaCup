@@ -57,8 +57,7 @@ public class Errores extends AppCompatActivity {
             tvlinea.setText(String.valueOf(error.get(i).getLinea()));
             tvcolumna.setText(String.valueOf(error.get(i).getColumna()));
             tvtipo.setText("Sintactico");
-            tvdescripcion.setText("Se esperaba");
-
+            tvdescripcion.setText("Se esperaba: "+convertirToken(error.get(i).getTokenSiguiente()));
             tvlexema.setPadding(70,50,70,50);
             tvlinea.setPadding(50,50,50,50);
             tvcolumna.setPadding(50,50,10,50);
@@ -72,6 +71,30 @@ public class Errores extends AppCompatActivity {
 
     }
 
-
+public String convertirToken(int token){
+    if(token==18)return ")";
+    else if(token==17)return "(";
+    else if(token==6)return "poligono";
+    else if(token==13)return "+";
+    else if(token==20)return "Numero";
+    else if(token==3)return "circulo";
+    else if(token==19)return ",";
+    else if(token==9)return "animar";
+    else if(token==2)return "Color";
+    else if(token==5)return "linea";
+    else if(token==16)return "/";
+    else if(token==14)return "-";
+    else if(token==8)return "curva";
+    else if(token==1)return "error";
+    else if(token==7)return "cuadrado";
+    else if(token==12)return "graficar";
+    else if(token==4)return "rectangulo";
+    else if(token==11)return "anterior";
+    else if(token==10)return "objeto";
+    else if(token==15)return "*";
+    else {
+        return "";
+    }
+}
 
 }

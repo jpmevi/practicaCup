@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Formas> formasMain = new ArrayList<Formas>();
     ArrayList<Forma.Error> errores = new ArrayList<Forma.Error>();
     ArrayList<ErrorLexico> erroresLexicos = new ArrayList<ErrorLexico>();
+    List<Integer> erroresperado ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,18 +40,19 @@ public class MainActivity extends AppCompatActivity {
         erroresLexicos=lexer.getErrorsLexList();
         formasMain=s.getListaFormas();
         errores=s.getErrorsList();
-        List<Integer> erroresperado=s.expected_token_ids();
         TextView error =(TextView) findViewById(R.id.errortxt);
         try {
             error.setText("");
             s.parse();
             bundle.putSerializable("formas",(Serializable)formasMain);
             intent.putExtra("Bundle_Array",bundle);
-            startActivity(intent);
+            if (formasMain.size()!=0) {
+                startActivity(intent);
+            }
         } catch (Exception ex) {
             System.out.println("Error irrecuperable " + ex);
             for(int i=0; i< errores.size();i++){
-                error.setText(String.valueOf(erroresperado.size()));
+                error.setText(error.getText()+ "Error Sintactico con el Token: "+ errores.get(i).getLexema()+" este no pertenece a la estructura- linea: "+ errores.get(i).getLinea()+"  columna: "+ errores.get(i).getColumna()+". Corrige e intenta de nuevo. \n");
             }
         }
     }

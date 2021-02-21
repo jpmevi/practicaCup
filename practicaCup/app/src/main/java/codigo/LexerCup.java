@@ -738,7 +738,7 @@ private ArrayList<ErrorLexico> errorsLexList= new ArrayList<ErrorLexico>();
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1:
-            { ErrorLexico error = new ErrorLexico(yytext(),yyline+1,yycolumn+1);
+            { ErrorLexico error = new ErrorLexico(yytext(),yyline+1,yycolumn+1,1);
                 errorsLexList.add(error);;    return  symbol(sym.error,  yytext());
             }
             // fall through
