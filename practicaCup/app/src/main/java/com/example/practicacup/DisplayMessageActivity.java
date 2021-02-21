@@ -36,11 +36,9 @@ public class DisplayMessageActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("Bundle_Array");
         ArrayList<Formas> formas = (ArrayList<Formas>) bundle.getSerializable("formas");
-
         public Vista(Context context) {
             super(context);
         }
-
         public void onDraw(Canvas canvas) {
             //canvas.drawRGB(255, 255, 0);
             for (Formas formaElegida : formas) {

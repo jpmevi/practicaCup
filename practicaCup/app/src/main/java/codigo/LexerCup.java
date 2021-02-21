@@ -3,8 +3,9 @@
 // source: LexerCup.flex
 
 package codigo;
-import java_cup.runtime.Symbol;
-import java.io.Reader;
+import Forma.ErrorLexico;import java_cup.runtime.Symbol;
+import java.io.Reader;import java.sql.SQLOutput;
+import java.util.ArrayList;
 
 // See https://github.com/jflex-de/jflex/issues/222
 @SuppressWarnings("FallThrough")
@@ -262,7 +263,7 @@ public class LexerCup implements java_cup.runtime.Scanner {
   }
 
   /** Input device. */
-  private Reader zzReader;
+  private java.io.Reader zzReader;
 
   /** Current state of the DFA. */
   private int zzState;
@@ -320,9 +321,15 @@ public class LexerCup implements java_cup.runtime.Scanner {
   private boolean zzEOFDone;
 
   /* user code: */
+private ArrayList<ErrorLexico> errorsLexList= new ArrayList<ErrorLexico>();
     private Symbol symbol(int type, String lexeme) {
         return  new Symbol(type, new Token(lexeme, yyline + 1, yycolumn + 1));
       }
+
+      public ArrayList<ErrorLexico> getErrorsLexList(){
+                  return errorsLexList
+                  ;
+              }
 
 
   /**
@@ -330,7 +337,7 @@ public class LexerCup implements java_cup.runtime.Scanner {
    *
    * @param   in  the java.io.Reader to read input from.
    */
-  public LexerCup(Reader in) {
+  public LexerCup(java.io.Reader in) {
     this.zzReader = in;
   }
 
@@ -435,7 +442,7 @@ public class LexerCup implements java_cup.runtime.Scanner {
    *
    * @param reader The new input stream.
    */
-  public final void yyreset(Reader reader) {
+  public final void yyreset(java.io.Reader reader) {
     zzReader = reader;
     zzEOFDone = false;
     yyResetPosition();
@@ -731,7 +738,8 @@ public class LexerCup implements java_cup.runtime.Scanner {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1:
-            { return  symbol(sym.error,  yytext());
+            { ErrorLexico error = new ErrorLexico(yytext(),yyline+1,yycolumn+1);
+                errorsLexList.add(error);;    return  symbol(sym.error,  yytext());
             }
             // fall through
           case 22: break;

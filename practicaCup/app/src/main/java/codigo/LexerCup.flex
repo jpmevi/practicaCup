@@ -1,6 +1,7 @@
 package codigo;
-import java_cup.runtime.Symbol;
-import java.io.Reader;
+import Forma.ErrorLexico;import java_cup.runtime.Symbol;
+import java.io.Reader;import java.sql.SQLOutput;
+import java.util.ArrayList;
 %%
 %class LexerCup
 %type java_cup.runtime.Symbol
@@ -14,9 +15,15 @@ SEPARADOR = \r|\n|\r\n
 ESPACIO = {SEPARADOR} | [ \t\f]
 D=[0-9]+
 %{
+private ArrayList<ErrorLexico> errorsLexList= new ArrayList<ErrorLexico>();
     private Symbol symbol(int type, String lexeme) {
         return  new Symbol(type, new Token(lexeme, yyline + 1, yycolumn + 1));
       }
+
+      public ArrayList<ErrorLexico> getErrorsLexList(){
+                  return errorsLexList
+                  ;
+              }
 %}
 %%
 
@@ -86,4 +93,5 @@ D=[0-9]+
 {D}+ {return  symbol(sym.Numero, yytext());}
 
 /* Error de analisis */
- . {return  symbol(sym.error,  yytext());}
+ . {ErrorLexico error = new ErrorLexico(yytext(),yyline+1,yycolumn+1);
+                errorsLexList.add(error);;    return  symbol(sym.error,  yytext());}

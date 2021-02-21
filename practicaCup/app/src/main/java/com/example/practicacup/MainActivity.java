@@ -11,45 +11,62 @@ import java.io.Serializable;
 import java.io.StringReader;
 import java.security.interfaces.DSAPrivateKey;
 import java.util.ArrayList;
+import java.util.List;
 
+import Forma.ErrorLexico;
 import Forma.Formas;
+import codigo.LexerCup;
 import codigo.Parser;
 
 public class MainActivity extends AppCompatActivity {
     ArrayList<Formas> formasMain = new ArrayList<Formas>();
-    ArrayList<String> errores = new ArrayList<String>();
-    public static final String EXTRA_MESSAGE= "com.example.practicacup.Mensaje";
+    ArrayList<Forma.Error> errores = new ArrayList<Forma.Error>();
+    ArrayList<ErrorLexico> erroresLexicos = new ArrayList<ErrorLexico>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
 
-    public void sendMessage(View view){
+    public void sendForma(View view){
         Intent intent = new Intent(this, DisplayMessageActivity.class);
         Bundle bundle = new Bundle();
         EditText editText = (EditText) findViewById(R.id.editText);
+
         String message = editText.getText().toString();
-        Parser s = new Parser(new codigo.LexerCup(new StringReader(message)));
+        LexerCup lexer = new  LexerCup(new StringReader(message));
+        Parser s = new Parser(lexer);
+        erroresLexicos=lexer.getErrorsLexList();
         formasMain=s.getListaFormas();
         errores=s.getErrorsList();
+        List<Integer> erroresperado=s.expected_token_ids();
         TextView error =(TextView) findViewById(R.id.errortxt);
         try {
+            error.setText("");
             s.parse();
-            System.out.println(String.valueOf(formasMain.size()));
             bundle.putSerializable("formas",(Serializable)formasMain);
             intent.putExtra("Bundle_Array",bundle);
             startActivity(intent);
-
         } catch (Exception ex) {
             System.out.println("Error irrecuperable " + ex);
             for(int i=0; i< errores.size();i++){
-                error.setText(error.getText()+ errores.get(i).toString()+"\n");
+                error.setText(String.valueOf(erroresperado.size()));
             }
         }
     }
 
-    public ArrayList<Formas> regresarLista(){
-        return formasMain;
+    public void sendErrores(View view){
+        if(errores.size()>0 || erroresLexicos.size()>0){
+            Intent intent = new Intent(this, Errores.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("errores",(Serializable)errores);
+            bundle.putSerializable("erroresLexicos",(Serializable)erroresLexicos);
+            intent.putExtra("ArrayErrores",bundle);
+            startActivity(intent);
+        }else{
+            TextView error =(TextView) findViewById(R.id.errortxt);
+            error.setText("Debe tener errores para generar el reporte");
+        }
     }
+
 }

@@ -4,4 +4,10 @@
     <string name="textfield_mensaje">Introduzca una expresion</string>
     <string name="button_generar">Generar</string>
     <string name="error"></string>
+    <string name="reporteerror">Ver reporte</string>
+    <string name="lexema">Lexema</string>
+    <string name="linea">Linea</string>
+    <string name="Columna">Columna</string>
+    <string name="tipo">Tipo</string>
+    <string name="descripcion">Descripcion</string>
 </resources>

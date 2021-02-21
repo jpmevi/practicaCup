@@ -8,6 +8,7 @@ package codigo;
 import java_cup.runtime.Symbol;
 import java.util.ArrayList;
 import java.util.List;
+import Forma.Error;
 import Forma.*;
 import java_cup.runtime.XMLElement;
 
@@ -235,7 +236,8 @@ public class Parser extends java_cup.runtime.lr_parser {
 
 
     ArrayList<Formas> listaFormas= new ArrayList<Formas>();
-    private ArrayList<String> errorsList= new ArrayList<String>();
+    private ArrayList<Error> errorsList= new ArrayList<Error>();
+
     public Parser(LexerCup lex) {
         super(lex);
         this.errorsList = new ArrayList();
@@ -246,10 +248,19 @@ public class Parser extends java_cup.runtime.lr_parser {
             report_error("Error Sintactico con el  Token:"+ token.getLexeme()+" este no pertenece a la estructura - linea: "+token.getLine()+" - columna: "+token.getColumn() + "\n",null);
 
             System.out.println("Error Sintactico con el Token: " + token.getLexeme() + " este no pertenece a la estructura - linea: " + token.getLine() + ", columna: " + token.getColumn());
-            errorsList.add(String.format("Error Sintactico con el Token: '%s' este no pertenece a la estructura- linea: %d  columna: %d. Corrige e intenta de nuevo.", token.getLexeme(), token.getLine(), token.getColumn()));
+            Error error = new Error(token.getLexeme(),token.getLine(),token.getColumn());
+            errorsList.add(error);
+            List<Integer> lista=expected_token_ids();
+        System.out.println(String.valueOf(lista));
         }
-        //retorna list de errores sintacticos
-        public ArrayList<String> getErrorsList(){
+
+    @Override
+    public List<Integer> expected_token_ids() {
+        return super.expected_token_ids();
+    }
+
+    //retorna list de errores sintacticos
+        public ArrayList<Error> getErrorsList(){
             return errorsList
             ;
         }
