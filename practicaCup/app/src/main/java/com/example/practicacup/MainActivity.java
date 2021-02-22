@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Forma.Error> errores = new ArrayList<Forma.Error>();
     ArrayList<ErrorLexico> erroresLexicos = new ArrayList<ErrorLexico>();
     ArrayList<Operador> operadores = new ArrayList<Operador>();
-    List<Integer> erroresperado ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
