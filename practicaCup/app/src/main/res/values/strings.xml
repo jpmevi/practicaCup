@@ -10,4 +10,6 @@
     <string name="Columna">Columna</string>
     <string name="tipo">Tipo</string>
     <string name="descripcion">Descripcion</string>
+    <string name="Operador">Operador</string>
+    <string name="Ocurrencia">Ocuccencia</string>
 </resources>

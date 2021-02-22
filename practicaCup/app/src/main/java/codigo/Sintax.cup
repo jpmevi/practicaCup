@@ -6,8 +6,9 @@ import java.util.List;
 import Forma.Error;
 import Forma.*;
 parser code {:
-    ArrayList<Formas> listaFormas= new ArrayList<Formas>();
+    private ArrayList<Formas> listaFormas= new ArrayList<Formas>();
     private ArrayList<Error> errorsList= new ArrayList<Error>();
+    private ArrayList<Operador> listaOperadores= new ArrayList<Operador>();
     public Parser(LexerCup lex) {
         super(lex);
         this.errorsList = new ArrayList();
@@ -15,13 +16,12 @@ parser code {:
     @Override
         public void syntax_error(Symbol st) {
             Token token = (Token) st.value;
+              List<Integer> lista=expected_token_ids();
             report_error("Error Sintactico con el  Token:"+ token.getLexeme()+" este no pertenece a la estructura - linea: "+token.getLine()+" - columna: "+token.getColumn() + "\n",null);
 
             System.out.println("Error Sintactico con el Token: " + token.getLexeme() + " este no pertenece a la estructura - linea: " + token.getLine() + ", columna: " + token.getColumn());
-            Error error = new Error(token.getLexeme(),token.getLine(),token.getColumn());
-            errorsList.add(error);
-            List<Integer> lista=expected_token_ids();
-                    System.out.println(String.valueOf(lista.get(0)));
+           Error error = new Error(token.getLexeme(),token.getLine(),token.getColumn(),lista.get(0));
+                       errorsList.add(error);
         }
 @Override
     public List<Integer> expected_token_ids() {
@@ -38,7 +38,10 @@ parser code {:
         public ArrayList getListaFormas(){
             return listaFormas;
         }
-
+//retorna list de Operadores
+        public ArrayList getListaOperadores(){
+            return listaOperadores;
+        }
 
     public void addListaFormas(Formas forma){
             try {
@@ -51,8 +54,8 @@ parser code {:
 :};
 
 
-terminal Token T_color, circulo,rectangulo,  linea, poligono, cuadrado, curva, animar, objeto, anterior, graficar,
- Suma, Resta, Multiplicacion, Division, Parentesis_a, Parentesis_c, coma, Numero, SLinea;
+terminal Token T_color, circulo,rectangulo,  linea, poligono, cuadrado, curva, animar, objeto, anterior, graficar;
+terminal Token Suma, Resta, Multiplicacion, Division, Parentesis_a, Parentesis_c, coma, Numero, SLinea;
 non terminal INICIO, FORMA, SIGUIENTE, ANIMAR, ANIMACION, GRAFICAR;
 non terminal Integer OPERACION;
 
@@ -96,23 +99,32 @@ FORMA ::=
 ;
 
 OPERACION ::= 
-    OPERACION:e1 Suma OPERACION:e2
-    {: RESULT = new Integer(e1.intValue()+e2.intValue());  :}
+    OPERACION:e1 Suma:s1 OPERACION:e2
+    {: Operador operador = new Operador(s1.getLexeme(),s1.getLine(),s1.getColumn(),1,String.valueOf(e1.intValue()+" + "+e2.intValue()));
+    listaOperadores.add(operador);
+    RESULT = new Integer(e1.intValue()+e2.intValue());  :}
     |
-    OPERACION:e1 Resta OPERACION:e2
-    {: RESULT = new Integer(e1.intValue()-e2.intValue());  :}
+    OPERACION:e1 Resta:s1 OPERACION:e2
+    {: Operador operador = new Operador(s1.getLexeme(),s1.getLine(),s1.getColumn(),1,String.valueOf(e1.intValue()+" - "+e2.intValue()));
+           listaOperadores.add(operador);
+    RESULT = new Integer(e1.intValue()-e2.intValue());  :}
     |
-    OPERACION:e1 Multiplicacion OPERACION:e2
-    {: RESULT = new Integer(e1.intValue()*e2.intValue()); :}
+    OPERACION:e1 Multiplicacion:s1 OPERACION:e2
+    {: Operador operador = new Operador(s1.getLexeme(),s1.getLine(),s1.getColumn(),1,String.valueOf(e1.intValue()+" * "+e2.intValue()));
+           listaOperadores.add(operador);
+    RESULT = new Integer(e1.intValue()*e2.intValue()); :}
     |
-    OPERACION:e1 Division OPERACION:e2
-    {: RESULT = new Integer(e1.intValue()/e2.intValue());  :}
+    OPERACION:e1 Division:s1 OPERACION:e2
+    {: Operador operador = new Operador(s1.getLexeme(),s1.getLine(),s1.getColumn(),1,String.valueOf(e1.intValue()+" / "+e2.intValue()));
+           listaOperadores.add(operador);
+    RESULT = new Integer(e1.intValue()/e2.intValue());  :}
     |
     Numero:n                 
     {: RESULT = Integer.valueOf( n.getLexeme());  :}
     |
     Parentesis_a OPERACION:e Parentesis_c     
-    {: RESULT = e; :}
+    {: 
+     RESULT = e; :}
     |
     error {:
             System.out.println("Error en OPERACION");

@@ -229,8 +229,9 @@ public class Parser extends java_cup.runtime.lr_parser {
 
 
 
-    ArrayList<Formas> listaFormas= new ArrayList<Formas>();
+    private ArrayList<Formas> listaFormas= new ArrayList<Formas>();
     private ArrayList<Error> errorsList= new ArrayList<Error>();
+    private ArrayList<Operador> listaOperadores= new ArrayList<Operador>();
     public Parser(LexerCup lex) {
         super(lex);
         this.errorsList = new ArrayList();
@@ -238,12 +239,12 @@ public class Parser extends java_cup.runtime.lr_parser {
     @Override
         public void syntax_error(Symbol st) {
             Token token = (Token) st.value;
+              List<Integer> lista=expected_token_ids();
             report_error("Error Sintactico con el  Token:"+ token.getLexeme()+" este no pertenece a la estructura - linea: "+token.getLine()+" - columna: "+token.getColumn() + "\n",null);
 
             System.out.println("Error Sintactico con el Token: " + token.getLexeme() + " este no pertenece a la estructura - linea: " + token.getLine() + ", columna: " + token.getColumn());
-            List<Integer> lista=expected_token_ids();
-            Error error = new Error(token.getLexeme(),token.getLine(),token.getColumn(),lista.get(0));
-            errorsList.add(error);
+           Error error = new Error(token.getLexeme(),token.getLine(),token.getColumn(),lista.get(0));
+                       errorsList.add(error);
         }
 @Override
     public List<Integer> expected_token_ids() {
@@ -260,7 +261,10 @@ public class Parser extends java_cup.runtime.lr_parser {
         public ArrayList getListaFormas(){
             return listaFormas;
         }
-
+//retorna list de Operadores
+        public ArrayList getListaOperadores(){
+            return listaOperadores;
+        }
 
     public void addListaFormas(Formas forma){
             try {
@@ -490,10 +494,15 @@ class CUP$Parser$actions {
 		int e1left = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).left;
 		int e1right = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).right;
 		Integer e1 = (Integer)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-2)).value;
+		int s1left = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).left;
+		int s1right = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
+		Token s1 = (Token)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		int e2left = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Integer e2 = (Integer)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
-		 RESULT = new Integer(e1.intValue()+e2.intValue());  
+		 Operador operador = new Operador(s1.getLexeme(),s1.getLine(),s1.getColumn(),1,String.valueOf(e1.intValue()+" + "+e2.intValue()));
+    listaOperadores.add(operador);
+    RESULT = new Integer(e1.intValue()+e2.intValue());  
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("OPERACION",6, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -505,10 +514,15 @@ class CUP$Parser$actions {
 		int e1left = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).left;
 		int e1right = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).right;
 		Integer e1 = (Integer)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-2)).value;
+		int s1left = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).left;
+		int s1right = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
+		Token s1 = (Token)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		int e2left = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Integer e2 = (Integer)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
-		 RESULT = new Integer(e1.intValue()-e2.intValue());  
+		 Operador operador = new Operador(s1.getLexeme(),s1.getLine(),s1.getColumn(),1,String.valueOf(e1.intValue()+" - "+e2.intValue()));
+           listaOperadores.add(operador);
+    RESULT = new Integer(e1.intValue()-e2.intValue());  
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("OPERACION",6, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -520,10 +534,15 @@ class CUP$Parser$actions {
 		int e1left = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).left;
 		int e1right = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).right;
 		Integer e1 = (Integer)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-2)).value;
+		int s1left = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).left;
+		int s1right = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
+		Token s1 = (Token)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		int e2left = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Integer e2 = (Integer)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
-		 RESULT = new Integer(e1.intValue()*e2.intValue()); 
+		 Operador operador = new Operador(s1.getLexeme(),s1.getLine(),s1.getColumn(),1,String.valueOf(e1.intValue()+" * "+e2.intValue()));
+           listaOperadores.add(operador);
+    RESULT = new Integer(e1.intValue()*e2.intValue()); 
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("OPERACION",6, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -535,10 +554,15 @@ class CUP$Parser$actions {
 		int e1left = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).left;
 		int e1right = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).right;
 		Integer e1 = (Integer)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-2)).value;
+		int s1left = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).left;
+		int s1right = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
+		Token s1 = (Token)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		int e2left = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Integer e2 = (Integer)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
-		 RESULT = new Integer(e1.intValue()/e2.intValue());  
+		 Operador operador = new Operador(s1.getLexeme(),s1.getLine(),s1.getColumn(),1,String.valueOf(e1.intValue()+" / "+e2.intValue()));
+           listaOperadores.add(operador);
+    RESULT = new Integer(e1.intValue()/e2.intValue());  
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("OPERACION",6, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -562,7 +586,8 @@ class CUP$Parser$actions {
 		int eleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
 		Integer e = (Integer)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
-		 RESULT = e; 
+		 
+     RESULT = e; 
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("OPERACION",6, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;

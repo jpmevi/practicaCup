@@ -1,6 +1,8 @@
 package com.example.practicacup;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,14 +12,18 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import Forma.Circulo;
 import Forma.Cuadrado;
 import Forma.Formas;
 import Forma.Linea;
+import Forma.Operador;
 import Forma.Poligono;
 import Forma.Rectangulo;
 
@@ -26,9 +32,10 @@ public class DisplayMessageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_display_message);
+        ConstraintLayout layoutPrincipal= findViewById(R.id.layout);
         Vista vista = new Vista(this);
-        setContentView(vista);
-
+        layoutPrincipal.addView(vista);
 
     }
 
@@ -116,5 +123,21 @@ public class DisplayMessageActivity extends AppCompatActivity {
             }
             return paint;
         }
+
     }
+
+    public void enviarReporte(View view){
+        Intent intent = new Intent(this, Reportes.class);
+        Intent intent2 =getIntent();
+        Bundle bundle = intent2.getBundleExtra("Bundle_Array");
+        ArrayList<Operador> operador = (ArrayList<Operador>) bundle.getSerializable("operadores");
+        ArrayList<Formas> formas = (ArrayList<Formas>) bundle.getSerializable("formas");
+        bundle=new Bundle();
+        bundle.putSerializable("operadores",(Serializable)operador);
+        bundle.putSerializable("formas",(Serializable)formas);
+        intent.putExtra("Bundle_Array",bundle);
+        startActivity(intent);
+    }
+
+
 }

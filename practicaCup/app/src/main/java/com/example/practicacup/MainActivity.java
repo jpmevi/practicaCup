@@ -15,6 +15,7 @@ import java.util.List;
 
 import Forma.ErrorLexico;
 import Forma.Formas;
+import Forma.Operador;
 import codigo.LexerCup;
 import codigo.Parser;
 
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Formas> formasMain = new ArrayList<Formas>();
     ArrayList<Forma.Error> errores = new ArrayList<Forma.Error>();
     ArrayList<ErrorLexico> erroresLexicos = new ArrayList<ErrorLexico>();
+    ArrayList<Operador> operadores = new ArrayList<Operador>();
     List<Integer> erroresperado ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +42,13 @@ public class MainActivity extends AppCompatActivity {
         erroresLexicos=lexer.getErrorsLexList();
         formasMain=s.getListaFormas();
         errores=s.getErrorsList();
+        operadores=s.getListaOperadores();
         TextView error =(TextView) findViewById(R.id.errortxt);
         try {
             error.setText("");
             s.parse();
             bundle.putSerializable("formas",(Serializable)formasMain);
+            bundle.putSerializable("operadores",(Serializable)operadores);
             intent.putExtra("Bundle_Array",bundle);
             if (formasMain.size()!=0) {
                 startActivity(intent);
